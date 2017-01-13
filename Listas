@@ -1,94 +1,65 @@
-package ListasEncadenadas;
-
-import javax.swing.JOptionPane;
-
-public class Aplicaci�n {
+package ListasEncadenadasSimples;
 	
-/*	public void main(String args[]){
-		
-		Lista listaNodos = new Lista();
-		String opc;
-		Nodo nodo;
-		
-		do{
-			opc=JOptionPane.showInputDialog("�Desea Ingresar un nuevo nodo? S/N");
-			if(opc.equalsIgnoreCase("S")){
-				listaNodos.agregarInicio(nuevoNodo());
-			}
-			
-		}while(!opc.equalsIgnoreCase("N"));
-		
-		
-		
-	}
 	
-	public static Nodo nuevoNodo(){
+	public class Nodo {
 		
-		Nodo N = new Nodo(JOptionPane.showInputDialog("Ingrese el contenido para el nodo"), null);
+		private String elemento; // Asumimos que todos los elementos son String
+		private Nodo siguiente; 
 		
-		return N;
-	}*/
-	
-	 public static void main(String[] args) throws Exception {
-	        Lista lista = new Lista();
-	        
-	        System.out.println("<<-- Ejemplo de lista simple -->>\n");
-	        
-	        lista.agregarInicio(new Nodo("30", null));
-	        lista.agregarInicio(new Nodo ("9", null));
-	        
-	        System.out.println("<<-- Lista -->>");
-	        lista.imprimirLista();
-	        
-	        System.out.println("\n\n<<-- Tama�o -->");
-	        System.out.println(lista.getTama�o());
-	        
-	             
-	        	        
-	        System.out.println("\nConsulta si existe el valor 30");
-	        System.out.println(lista.buscarNodo("30"));
-	        
-	        System.out.println("\nConsulta la posicion del valor 9");
-	        System.out.println(lista.getPosicion("9"));
-	        
-	        System.out.println("\nElimina la lista");
-	        lista.eliminarLista();
-	        
-	        System.out.println("\nConsulta si la lista est� vacia");
-	        System.out.println(lista.estaVac�a());
-	
-	    }   
-	}
-	
+		public Nodo(String s, Nodo n) { //Constructor del nodo
+			elemento = s; 
+			siguiente = n; } 
+		
+		public String getElemento() { 
+			return elemento; 
+		} 
+		
+		public Nodo getSiguiente() {
+			return siguiente; 
+		} 
+		
+		public void setElement(String nuevoElemento){ 
+			elemento = nuevoElemento; 
+		} 
+		
+		public void setSiguiente( Nodo nuevoSig) {
+			siguiente = nuevoSig;
+		
+		} 
+		 
+		
+	} 
+	 
 
 
-package ListasEncadenadas;
+package ListasEncadenadasSimples;
 
 public class Lista {
 	
 	protected Nodo nodoInicial; //nodo inicial de la lista (cabeza)
-	protected long tama�o; 	// n�mero de nodos en la lista 
+	protected long tamaño; 	// número de nodos en la lista 
 	
-	public void Lista(){ //Constructor por defecto, crea lista vac�a 
+	public void Lista(){ //Constructor por defecto, crea lista vacía 
 		nodoInicial = null; 
-		tama�o = 0; 
+		tamaño = 0; 
 	}
 	
-	public long getTama�o(){
+	public long getTamaño(){
 		
-		return tama�o;
+		return tamaño;
 	}
 	
-	public boolean estaVac�a(){
+	public boolean verificarVacia(){
 		
 		return nodoInicial==null;
 	}
 	
-	public void agregarInicio(Nodo nodoNuevo){ 
+	public void agregarNodoInicio(Nodo nodoNuevo){ 
 		
-		if(estaVac�a()){
+		if(verificarVacia()==true){
 			
 			nodoInicial=nodoNuevo;
+			
 		}else{
 			
 			nodoNuevo.setSiguiente(nodoInicial);
@@ -96,27 +67,50 @@ public class Lista {
 			
 		}
 				
-		tama�o++; // El tama�o de la lista aumenta en 1 
+		tamaño++; // El tamaño de la lista aumenta en 1 
 
 	}
 	
-	public void eliminarInicio(Nodo t){
+	public void agregarFinal(Nodo nodoNuevo){ 
+		  
+        if (verificarVacia()==true) {
+            
+            nodoInicial = nodoNuevo;
+        
+        } else{
+            
+            Nodo nodoAux = nodoInicial;
+           
+            while(nodoAux.getSiguiente()!= null){
+            	nodoAux = nodoAux.getSiguiente();
+            }
+           
+            nodoAux.setSiguiente(nodoNuevo);
+        }
+       
+        tamaño++;
+	}
+	
+	public String eliminarInicio(Nodo t){
+		
+		String aviso="";
+		
 		if (nodoInicial == null){
-			System.out.println("La lista est� vac�a"); 
-			t = nodoInicial; 
-			nodoInicial = nodoInicial.getSiguiente(); // nodo inicial apunta al siguiente 
-			t.setSiguiente(null); // el siguiente nodo a t se vuelve null 
-			tama�o = tama�o-1; //el numero de nodos disminuye en 1
+			aviso= "La lista está vacía";
+			
+			return aviso;
+			
 		}
+		
+		t = nodoInicial; 
+		nodoInicial = nodoInicial.getSiguiente(); // nodo inicial apunta al siguiente 
+		t.setSiguiente(null); // el siguiente nodo a t se vuelve null 
+		tamaño = tamaño-1; //el numero de nodos disminuye en 1
+		
+		return aviso;
 	
 	}
-	
-	public void imprimirLista(Lista lista){
-		
-		
-		
-	}
-	
+			
 	public boolean buscarNodo(String dato){
 		
 		Nodo nodoAux=nodoInicial; //crea copia de la lista existente
@@ -160,66 +154,91 @@ public class Lista {
 		}
 	}
 	
-	public void imprimirLista(){
+	public String imprimirLista(){
 		
-		if(!estaVac�a()){
+		String lista = "";
+		
+		if(verificarVacia()==false){
 			
 			Nodo nodoAux= nodoInicial;
 			int i=0;
 			
 			while(nodoAux!= null){
 				
-				System.out.print(i + ". [ "+ nodoAux.getElemento()+" ] -> ");
+				lista += (i + ". [ "+ nodoAux.getElemento()+" ] -> ");
 				nodoAux=nodoAux.getSiguiente();
 				
 				i++;
 			}
 			
 		}
-		
+		return lista;
 	}
 
 	public void eliminarLista(){
 		
 		nodoInicial=null;
-		tama�o=0;
+		tamaño=0;
 		
 	}
+
 }
+
+package ListasEncadenadasSimples;
+
+public class Aplicación {
+	
+	 public static void main(String[] args) throws Exception {
+	        
+		 Lista lista = new Lista();
+	        Nodo nodoAux = new Nodo("", null);
+	        
+	        System.out.println("************* Ejemplo de lista simple ************\n");
+	        
+	        lista.agregarNodoInicio(new Nodo("10", null));
+	        lista.agregarNodoInicio(new Nodo ("9", null));
+	        
+	        System.out.println("***** Lista *****");
+	        lista.imprimirLista();
+	        
+	        System.out.println("\n\n***** Tamaño ******");
+	        System.out.println(lista.getTamaño());
+	        	        	        
+	        System.out.println("\nIngresa un nodo nuevo al inicio");
+	        lista.agregarNodoInicio(new Nodo("45", null));
+	        System.out.println(lista.imprimirLista());
+	        
+	        System.out.println("\nIngresa un nodo nuevo al inicio");
+	        lista.agregarNodoInicio(new Nodo("hoola", null));
+	        System.out.println(lista.imprimirLista());
+	        
+	        System.out.println("\nIngresa un nodo nuevo al final");
+	        lista.agregarFinal(new Nodo("23", null));
+	        System.out.println(lista.imprimirLista());
+	        
+	        System.out.println("\nElimina el valor inicial");
+	        lista.eliminarInicio(nodoAux);
+	        System.out.println(lista.imprimirLista());
+	        
+	        System.out.println("\nConsulta si existe el valor 30");
+	        System.out.println(lista.buscarNodo("23"));
+	        
+	        System.out.println("\nConsulta la posicion del valor 9");
+	        System.out.println(lista.getPosicion("9"));
+	        
+	        System.out.println(lista.imprimirLista());
+	        
+	        System.out.println("\nElimina la lista");
+	        lista.eliminarLista();
+	        System.out.println(lista.imprimirLista());
+	        
+	        System.out.println("\nConsulta si la lista está vacia");
+	        System.out.println(lista.verificarVacia()); 
+	    
+	
+	    }   
+	}
 	
 
-package ListasEncadenadas;
 	
-	
-	public class Nodo {
-		
-		private String elemento; // Asumimos que todos los elementos son String
-		private Nodo siguiente; 
-		
-		public Nodo(String s, Nodo n) { //Constructor del nodo
-			elemento = s; 
-			siguiente = n; } 
-		
-		public String getElemento() { 
-			return elemento; 
-		} 
-		
-		public Nodo getSiguiente() {
-			return siguiente; 
-		} 
-		
-		public void setElement(String nuevoElemento){ 
-			elemento = nuevoElemento; 
-		} 
-		
-		public void setSiguiente( Nodo nuevoSig) {
-			siguiente = nuevoSig;
-		
-		} 
-		 
-		
-	} 
-	 
-	
-
 
